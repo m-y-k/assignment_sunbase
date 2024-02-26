@@ -1,5 +1,7 @@
 package com.sunbase.customer.controllers;
 
+import com.sunbase.customer.models.JwtResponse;
+import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -55,13 +57,16 @@ public class UserController {
     } 
   
     @PostMapping("/generateToken") 
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) { 
+    public JwtResponse authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())); 
-        if (authentication.isAuthenticated()) { 
-            return jwtService.generateToken(authRequest.getUsername()); 
+        if (authentication.isAuthenticated()) {
+            String token = jwtService.generateToken(authRequest.getUsername());
+            JwtResponse jwtResponse = JwtResponse.builder().jwtToken(token).username(authRequest.getUsername()).build();
+            return jwtResponse;
         } else { 
             throw new UsernameNotFoundException("invalid user request !"); 
-        } 
+        }
+
     } 
   
 } 

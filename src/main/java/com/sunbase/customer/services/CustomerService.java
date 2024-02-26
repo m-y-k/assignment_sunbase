@@ -13,6 +13,9 @@ import com.sunbase.customer.models.Customer;
 import com.sunbase.customer.repositories.CustomerRepository;
 import com.sunbase.customer.requestDto.CustomerRequestDto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class CustomerService {
 	
@@ -30,7 +33,6 @@ public class CustomerService {
 		customer.setPhone(customerRequestDto.getPhone());
 		customer.setState(customerRequestDto.getState());
 		customer.setStreet(customerRequestDto.getStreet());
-	
 		try {
 			customerRepository.save(customer);
 			return "Customer added succesfully";
@@ -64,5 +66,15 @@ public class CustomerService {
 		
 		customerRepository.deleteById(id);
 		return "deleted successfully";
+	}
+
+	public List<String> getAllCustomers() {
+		List<Customer> list = customerRepository.findAll();
+
+		List<String> ans = new ArrayList<>();
+
+		for (Customer customer : list) ans.add(customer.getFirstName());
+
+		return ans;
 	}
 }

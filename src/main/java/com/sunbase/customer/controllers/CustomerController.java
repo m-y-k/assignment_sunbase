@@ -4,22 +4,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.sunbase.customer.models.Customer;
 import com.sunbase.customer.requestDto.CustomerRequestDto;
 import com.sunbase.customer.services.CustomerService;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/customer")
+@CrossOrigin(origins = "*") // Allow requests from all origins
 public class CustomerController {
 
 	@Autowired
@@ -73,5 +68,10 @@ public class CustomerController {
 		} catch (Exception e) {
 			throw new Exception(e.getMessage());
 		}
+	 }
+
+	 @GetMapping("get/all")
+	public List<String> getAllCustomers() {
+		return customerService.getAllCustomers();
 	 }
 }
